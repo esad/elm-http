@@ -443,8 +443,12 @@ handleResponse handle response =
             fail (UnexpectedPayload "Response body is a blob, expecting a string.")
 
   else
-
-      fail (BadResponse response.status response.statusText)
+      let
+        text = case response.value of
+          Text str -> str
+          _ -> response.statusText
+      in
+        fail (BadResponse response.status text)
 
 
 
